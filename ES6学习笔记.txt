@@ -1,0 +1,50 @@
+ES6开发环境搭建：
+1.新建dist 和src文件  index.html   src下新建index.js文件  
+2.npm init -y  初始化生成 package.json文件  -y的意思是默认的 不用一步步回车确认
+3.全局安装babel-cli  npm install -g babel-cli
+4.本地安装babel-preset-es2015 和bable-cli   npm install bable-preset-es2015 babel-cli -D     将es6转化成es5
+5.新建.babelrc文件  配置如下：
+	{
+		"presets":[
+			"es2015"
+		],
+		"plugins":[]
+	}
+6.将src下的index.js(es6)打包成dist下的index.js(es5) babel src/index.js -o dist/index.js
+7.通过npm run build 编译成es5  package.json配置如下:
+"scripts": {
+    "build": "babel src/index.js -o dist/index.js"
+  }
+8.var 全局声明  let局部声明  const常量声明 定义了之后不允许改变
+9.解构赋值 
+	数组解构:let[a,b,c]=[1,2,3]  let[a,[b,c],d]=[1,[2,3],4]; 
+	     	 默认值 let[fool=true]=[]  let[a,b="ding"]=["westnbrook-"];  console.log(a+b) // westbrook-ding
+	     	  undefined为空值 null 有值不为空
+	对象赋值：let{a,b}={a:"li",b:"si"};
+	字符串赋值:const[a,b,c,d]="west";  a="w"  b="e" c="s" d="t";
+10.扩展运算符 ...arg 函数 function(...arg)  数组赋值不同时改变 let arr2=[...arr1] 
+	rest运算符 function(first,...arg)
+
+11.字符串模板 全局安装live-server   npm install -g live-server  热更新  运行本地服务器  live-server 相当于npm run dev
+	let name="dingge";
+	let dec=`es6是一门好用的课程,${name}正在学习改课程!`;
+	查找字符串
+	dec.includes(name); // true   includes相当于indexOf 但是不需要判断是否大于-1
+	dec.startsWith(name); // 开头有没有  
+	dec.endsWith(name); // 结尾有没有
+
+	复制字符串 document.write("json1".repeat(3))  .repeat(数量)
+12 二进制声明 binary 以0B开头+二进制数
+	let binary=0B010101;
+	
+  八进制声明 Octal 以0o开头+八进制数
+	let octal=0o666;
+
+  Number.isFinite(a); 判断是否为数字
+  Number.isNaN();判断是否为非数字
+  Number.isInteger(); 是否为整数
+  Number.parseInt();转换为整数
+  Number.parseFloat(); 转换成浮点数
+  Number.MAX_SAFE_INTEGER 最大安全整数
+  Number.MIN_SAFE_INTEGER 最小安全整数
+  Number.isSafeInteger()  是否是安全整数
