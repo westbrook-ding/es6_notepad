@@ -175,3 +175,208 @@ for(let item in obj6){
 }
 // 通过obj[age] 输出
 console.log(obj6[age]); 
+
+16.Set 的用法   数组去重
+let setArr=new Set(["west","george","anthony"]);
+console.log(setArr); // Set(3){"west","george","anthony"} 跟json一样是一种数据结构
+setArr.add("west");
+console.log(setArr);  //不允许数组中元素重复
+setArr.add("ding");   // add() 类似数组的push方法
+console.log(setArr);
+// has()查找元素是否存在于数组中 返回true 或false  
+console.log(setArr.has("ding")); // true
+console.log(setArr.has("li")); // false
+// delete()  删除数组某个元素
+setArr.delete("west");
+console.log(setArr);
+// clear() 删除数组所有元素
+// setArr.clear();
+console.log(setArr);
+
+// 遍历 for of
+for(let item of setArr){
+	console.log(item);
+}
+// forEach() 方法
+setArr.forEach((val)=>console.log(val));
+// size属性 等价于length属性
+console.log(setArr.size);
+
+// WeakSet() 添加对象  相同的内存地址不允许重复
+let weakObj=new WeakSet();
+let obj7={a:"westbrook",b:"georeg"};
+let obj8={a:"westbrook",b:"georeg"};
+weakObj.add(obj7);
+weakObj.add(obj8);
+console.log(weakObj); // obj7和obj8都存在  因为obj7和obj8是不同的内存地址
+let obj9=obj7;
+weakObj.add(obj9);
+console.log(weakObj); //  obj7存在 obj9不存在  因为obj7和obj9指向同一块内存空间
+
+17 map数据结构  set() get() has() delete() clear()  size
+let map=new Map();
+// map数据结构 key和value非常灵活 key和value可以设置任意值
+let json1={
+	name:"jsding",
+	age:25
+}
+let map=new Map();
+// set() 添加值
+map.set(json,"wesbrook-ding");
+map.set("person",json);
+console.log(map);
+// get() 通过key获取value
+console.log(map.get(json));
+console.log(map.get("person"));
+// delete(key) 删除 clear() 清除所有
+map.delete(json);
+console.log(map);
+// has()查找
+console.log(map.has("person")); // true
+console.log(map.has(json)); // false
+// size 长度
+
+18.proxy 代理 ES6增强  对象和函数(方法) 预处理  生命周期函数
+let obj10={
+	add:function(a,b){
+		return a+b;
+	},
+	name:"ding"
+}
+let pro=new Proxy({
+	add:function(a,b){
+		return a+b;
+	},
+	name:"ding"
+},{
+	get:function(target,key,property){
+		// 获取值前干些什么
+		console.log("获取值前干什么");
+		console.log(target);  // target 为obj10
+		console.log(key);
+		return target[key];
+	},
+	// value 为新设置的值  receiver为旧值
+	set:function(target,key,value,receiver){
+		// 设置值前干点什么
+		console.log("设置之前干点什么");
+		console.log(`设置${key}=${value}`);
+		return target[key]=value;
+	}
+})
+console.log(pro.name);
+pro.name="westbrook";
+console.log(pro.name);
+
+// apply()
+let target1=()=>"I am westbrook-ding";
+let handler={
+	apply(target,ctx,args){
+		// 调用函数前做些什么
+		console.log("do apply");
+		return Reflect.apply(...arguments);
+	}
+}
+let pro1=new Proxy(target1,handler);
+console.log(pro1());
+
+19.promise
+// promise 回调地狱 1.洗菜做饭  2.坐下来吃饭 3.收拾桌子洗碗
+let state=1;
+function step1(resolve,reject){
+	console.log("1.开始-洗菜做饭");
+	if(state==1){
+		resolve("洗菜做饭完成");
+	} else{
+		reject("洗菜做饭错误");
+	}
+}
+function step2(resolve,reject){
+	console.log("2.开始-坐下来吃饭");
+	if(state==1){
+		resolve("吃饭完成");
+	} else{
+		reject("吃饭错误");
+	}
+}
+function step3(resolve,reject){
+	console.log("3.开始-收拾桌子洗碗");
+	if(state==1){
+		resolve("收拾桌子洗碗完成");
+	} else{
+		reject("收拾桌子洗碗错误");
+	}
+}
+new Promise(step1)
+.then(function(val){
+	// 第一步完成时  打印第一步resolve信息
+	console.log(val);
+	// 执行第二步
+	return new Promise(step2);
+})
+.then(function(val){
+	console.log(val);
+	return new Promise(step3);
+})
+.then(function(val){
+	console.log(val);
+});
+
+20.class的用法： 注意class里面没有逗号 
+class People{
+	// constructor 传递类的参数
+	constructor(name,age){
+		this.name=name;
+		this.age=age;
+	}
+	eat(){
+		console.log(this.name+"吃大餐");
+	}
+	play(){
+		this.eat();
+		console.log(this.name+"环游世界");
+	}
+}
+let person=new People("dingge",25);
+console.log(person.name);
+console.log(person.age);
+console.log(person.eat());
+console.log(person.play());
+//继承 extends
+class Per extends People{
+
+}
+let p=new Per;
+console.log(p.add());
+
+21.模块化 export import
+temp.js中 export val name="westbrook";
+index.js中 导入 import {name} from "./temp.js"
+
+temp.js中 导出多个变量 对象方法
+let a="west";
+let b="web";
+let c=18;
+export {a,b,c}
+index.js 导入  import {a,b,c} from './temp.js'
+
+temp.js中 导出函数
+export function add(a,b){
+	return a+b;
+}
+index.js中导入  import {add} from './temp.js'
+
+as的用法 重新定义一个语义化的名称
+temp.js中 导出多个变量 对象方法
+let a="west";
+let b="web";
+let c=18;
+exprot {
+	name as a,
+	skill as b,
+	age as c
+}
+index.js中导入 import {name,skill,age} from "./temp.js"
+
+export 可以有多个  import引入时 必须带{}
+export default只能有一个 import 引入时 不带{}  名称可以自己定义
