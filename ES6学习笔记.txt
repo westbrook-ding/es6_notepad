@@ -48,3 +48,130 @@ ES6开发环境搭建：
   Number.MAX_SAFE_INTEGER 最大安全整数
   Number.MIN_SAFE_INTEGER 最小安全整数
   Number.isSafeInteger()  是否是安全整数
+
+13 数组的相关方法：a. json数组格式  let json={
+	"0":"westbrook",
+	"1":"george",
+	"2":"anthony"
+} 
+将json数组格式转化为数组:let arr=Array.from(json);
+
+b. 将以逗号分割的字符串转化成数组 Array of()
+let str="westbrook,george,anthony"; 
+let arr=Array.of(str);  或者  let arr=Array.of("westbrook","george","anthony");
+
+c.数组实例的find()方法 查找数组中的元素
+let arr=["1","2","3","4","westbrook","george","anthony"];
+let res=arr.find(function(value,index,arr){
+	return index>5;  // george  找到了就不执行了
+})
+
+d.fill(要替换成的元素,要替换的位置的起始下标,要替换的位置的结束下标)  替换数组元素  包含开始不包含结束
+let arr=["a1","bc","df"];
+let res=arr.fill("c",1,3)  // ["a1","bc","df"]
+
+f.遍历数组 for of 
+item of arr  item 为数组元素
+item of arr.keys() item 为数组的下标
+item of arr.entries()  item 为单个[下标,元素]
+[index,val] of arr.entries() index 为下标 val为元素
+
+g. entries 条目
+let arr=["a","b","c"];
+let list=arr.entries();
+console.log(list.next().value)   // [0,"a"]
+console.log(list.next().value)   // [1,"b"]
+console.log(list.next().value)   // [2,"c"]
+
+14.throw new Error("a is error") 抛出异常
+ use strict 严格模式  可以在函数里使用
+ add.length  函数形参的长度默认参数除外    add为函数名
+箭头函数: 一行代码不需要加{}
+let add=(a,b=1)=>a+b;
+console.log(add(1))
+
+15.对象的函数解构:
+let json={
+	a:"westbrook",
+	b:"george",
+	c:"anthony"
+}
+let jiegou=({a,b,c})=>{
+	console.log(a,b,c);
+}
+jiegou(json) // westbrook george anthony
+
+数组的解构  展开运算符
+let arr=[4,5,6];
+let jie=(a,b,c)=>console.log(a+b+c);
+jie(...arr);
+
+in的用法：
+判断属性是否存在于对象中 返回true 或false  key in obj
+判断数组对应下标位置是否有值 返回true 或false  i in arr
+let obj={
+	a:"1",
+	b:"2"
+}
+console.log("a" in obj) // true
+console.log("c" in obj) // false
+let arr=["west",,""];
+console.log(0 in arr);  // true
+console.log(1 in arr); // false
+console.log(2 in arr); // true
+
+遍历数组的方法：
+1.forEach()
+let arr=["ge","an","west"];
+arr.forEach((val,index)=>console.log(index,val))  // 0 ge  1 an  2 west
+2.filter() some()
+arr.filter(x=>console.log(x)) // ge an west
+arr.some(x=>console.log(x))
+
+3.map() 替换
+arr.map(x=>"web")  //  ["web","web","web"];
+
+toString()方法  arr.toString()  // ge,an,west
+join() 方法  arr.join("-") // ge-an-west
+
+16.对象的赋值
+let name="westbrook-ding";
+let skill="es6";
+let obj={name,skill};
+console.log(obj);  // {name:"westbrook",skill:"es6"}
+
+key值的构建
+let key="skill";
+let obj={
+	[key]:"es6"
+}
+console.log(obj); // {skill:"es6"};
+
+对象的is() 方法  严格相等
+let obj4={name:"west"};
+let obj5={name:"west"};
+console.log(Object.is(obj4.name,obj5.name)); // true
+// === 同值相等  is() 严格相等
+console.log(+0===-0); // true
+console.log(NaN===NaN); // false
+console.log(Object.is(+0,-0)); // false
+console.log(Object.is(NaN,NaN)) // true
+
+对象的assign() 方法 合并几个对象的属性 如果有相同属性则覆盖
+let a1={b:"west",c:"brook"};
+let b1={c:"-",e:"ding"};
+let c1={e:"perfect",g:"good"};
+let d1=Object.assign(a1,b1,c1);
+console.log(d1);
+
+// Symbol的用法:对对象属性的保护  循环时不输出
+let obj6={name:"dingge",skill:"web"};
+// 将对象的属性定义成Symbol类型进行保护
+let age=Symbol();
+obj6[age]=18;
+console.log(obj6)
+for(let item in obj6){
+	console.log(obj6[item]);
+}
+// 通过obj[age] 输出
+console.log(obj6[age]); 
