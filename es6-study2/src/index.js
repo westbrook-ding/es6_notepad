@@ -288,7 +288,14 @@ console.log(person.play());
 
 //继承 extends
 class Per extends People{
-
+ constructor(name,age,sex){
+    // 通过supper去继承
+    super(name,age);
+    this.sex=sex;
+ }
 }
-let p=new Per;
-console.log(p.add());
+let p=new Per("west",18,"男");
+console.log(p.name);
+console.log(p.age);
+console.log(p.sex);
+console.log(p.eat());
